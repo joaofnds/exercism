@@ -4,13 +4,20 @@
   (:export #:to-rna))
 (in-package #:dna)
 
-(defun rna-complement (nucleotide)
-  (case nucleotide
-    (#\G #\C)
-    (#\C #\G)
-    (#\T #\A)
-    (#\A #\U)
-    (t (error "~a is not a DNA nucleotide" nucleotide))))
+(defparameter *dna-rna-hash* (make-hash-table))
+(setf (gethash #\G *dna-rna-hash*) #\C)
+(setf (gethash #\C *dna-rna-hash*) #\G)
+(setf (gethash #\T *dna-rna-hash*) #\A)
+(setf (gethash #\A *dna-rna-hash*) #\U)
 
-(defun to-rna (str)
-  (map 'string #'rna-complement str))
+(defun to-rna (dna-sequence)
+  (let ((rna-sequence (make-array (length dna-sequence)
+                                  :fill-pointer 0
+                                  :element-type 'character)))
+    (loop :for nucleotide :across dna-sequence
+          :for rna-nucleotide = (gethash nucleotide *dna-rna-hash*)
+          :if rna-nucleotide
+            :do (vector-push rna-nucleotide rna-sequence)
+          :else
+            :do (return (error "~a is not a DNA nucleotide" nucleotide))
+          :finally (return rna-sequence))))
