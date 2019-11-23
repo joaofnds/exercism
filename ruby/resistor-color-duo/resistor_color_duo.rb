@@ -18,8 +18,8 @@ class ResistorColorDuo
     white: 9
   }.freeze
 
-  def self.value(colors)
-    color_value(colors[0].to_sym, 10) + color_value(colors[1].to_sym)
+  def self.value((tens, ones))
+    color_value(tens.to_sym, 10) + color_value(ones.to_sym)
   end
 
   def self.color_value(color, weight = 1)
