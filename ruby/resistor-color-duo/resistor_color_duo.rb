@@ -1,9 +1,3 @@
-# Write your code for the 'Resistor Color Duo' exercise in this file. Make the tests in
-# `resistor_color_duo_test.rb` pass.
-#
-# To get started with TDD, see the `README.md` file in your
-# `ruby/resistor-color-duo` directory.
-
 class ResistorColorDuo
   COLORS_VALUES = {
     black: 0,
@@ -19,10 +13,10 @@ class ResistorColorDuo
   }.freeze
 
   def self.value((tens, ones))
-    color_value(tens.to_sym, 10) + color_value(ones.to_sym)
+    color_value(tens.to_sym) * 10 + color_value(ones.to_sym)
   end
 
-  def self.color_value(color, weight = 1)
-    COLORS_VALUES[color] * weight
+  def self.color_value(color)
+    COLORS_VALUES[color]
   end
 end
