@@ -18,6 +18,6 @@ class HighScores
   end
 
   def latest_is_personal_best?
-    personal_best == scores.last
+    latest == personal_best
   end
 end
