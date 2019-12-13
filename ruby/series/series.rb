@@ -1,15 +1,15 @@
 class Series
-  def initialize(str)
-    @str = str
+  def initialize(string)
+    @string = string
   end
 
-  def slices(n)
-    raise ArgumentError if n > str.length
+  def slices(length)
+    raise ArgumentError if length > string.length
 
-    str.chars.each_cons(n).map(&:join)
+    string.chars.each_cons(length).map(&:join)
   end
 
   private
 
-  attr_reader :str
+  attr_reader :string
 end
