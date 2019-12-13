@@ -6,7 +6,7 @@ class Series
   def slices(n)
     raise ArgumentError if n > str.length
 
-    (0..(str.length - n)).map { |i| str[i, n] }
+    str.chars.each_cons(n).map(&:join)
   end
 
   private
