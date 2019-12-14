@@ -1,41 +1,26 @@
 class SpaceAge
-  def initialize(age)
-    @age = age
+  ORBITAL_PERIOD = { # in seconds
+    earth: 31_557_600,
+    mercury: 7_600_543,
+    venus: 19_414_149,
+    mars: 59_354_032,
+    jupiter: 374_355_659,
+    saturn: 929_292_362,
+    uranus: 2_651_370_019,
+    neptune: 5_200_418_560
+  }.freeze
+
+  def initialize(seconds)
+    @seconds = seconds
   end
 
-  def on_earth
-    age / 31_557_600.0
-  end
-
-  def on_mercury
-    on_earth / 0.2408467
-  end
-
-  def on_venus
-    on_earth / 0.61519726
-  end
-
-  def on_mars
-    on_earth / 1.8808158
-  end
-
-  def on_jupiter
-    on_earth / 11.862615
-  end
-
-  def on_saturn
-    on_earth / 29.447498
-  end
-
-  def on_uranus
-    on_earth / 84.016846
-  end
-
-  def on_neptune
-    on_earth / 164.79132
+  ORBITAL_PERIOD.each_pair do |planet, orbital_seconds|
+    define_method :"on_#{planet}" do
+      seconds.fdiv(orbital_seconds)
+    end
   end
 
   private
 
-  attr_reader :age
+  attr_reader :seconds
 end
