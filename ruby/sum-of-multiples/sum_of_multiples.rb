@@ -1,17 +1,17 @@
 class SumOfMultiples
-  def initialize(*numbers)
-    @numbers = numbers
+  def initialize(*divisors)
+    @divisors = divisors
   end
 
   def to(max)
-    (1...max).select { |n| multiple?(n) }.sum
+    (1...max).select { |n| factor?(n) }.sum
   end
 
   private
 
-  attr_reader :numbers
+  attr_reader :divisors
 
-  def multiple?(a)
-    numbers.select { |b| (a%b).zero? }.any?
+  def factor?(number)
+    divisors.any? { |divisor| (number % divisor).zero? }
   end
 end
