@@ -4,9 +4,7 @@ class Phrase
   end
 
   def word_count
-    words
-      .map(&:downcase)
-      .each_with_object(Hash.new(0)) { |word, memo| memo[word] += 1 }
+    words.map(&:downcase).tally
   end
 
   private
