@@ -1,17 +1,21 @@
+# frozen_string_literal: true
+
 class Phrase
+  RE = {
+    words_including_contraction: /\b[[:word:]']+\b/
+  }.freeze
+
+  private_constant :RE
+
   def initialize(phrase)
-    @phrase = phrase
+    @words = phrase.downcase.scan(RE[:words_including_contraction])
   end
 
   def word_count
-    words.map(&:downcase).tally
+    words.tally
   end
 
   private
 
-  attr_reader :phrase
-
-  def words
-    phrase.scan(/\b[[:word:]']+\b/)
-  end
+  attr_reader :words
 end
