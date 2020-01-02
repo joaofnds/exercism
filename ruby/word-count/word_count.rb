@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Phrase
   RE = {
     words_including_contraction: /\b[[:word:]']+\b/
