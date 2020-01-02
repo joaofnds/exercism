@@ -1,4 +1,6 @@
 class Phrase
+  private
+
   RE = {
     words_including_contraction: /\b[[:word:]']+\b/
   }.freeze
@@ -9,11 +11,11 @@ class Phrase
     @words = phrase.downcase.scan(RE[:words_including_contraction])
   end
 
+  attr_reader :words
+
+  public
+
   def word_count
     words.tally
   end
-
-  private
-
-  attr_reader :words
 end
