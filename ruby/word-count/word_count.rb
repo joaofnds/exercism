@@ -1,7 +1,7 @@
 class Phrase
   private
 
-  RE = {
+  RE = REGULAR_EXPRESSION = {
     words_including_contraction: /\b[[:word:]']+\b/
   }.freeze
 
