@@ -5,6 +5,7 @@ class ArmstrongNumbers
 
   def self.armstrong_sum(number)
     digits = number.digits
-    digits.sum { |digit| digit**digits.count }
+    power = digits.length
+    digits.sum { |digit| digit**power }
   end
 end
