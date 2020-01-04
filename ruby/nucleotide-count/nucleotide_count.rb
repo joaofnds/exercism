@@ -13,10 +13,7 @@ class Nucleotide
 
   private
 
-  attr_reader :strand
-
   def initialize(dna_strand)
-    @dna_strand = dna_strand
     @histogram = NUCLEOTIDES.map { |n| [n, dna_strand.count(n)] }.to_h
   end
 
