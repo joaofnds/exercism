@@ -5,7 +5,7 @@ class Phrase
     words_including_contraction: /\b[[:word:]']+\b/
   }.freeze
 
-  private_constant :RE
+  private_constant :RE, :REGULAR_EXPRESSION
 
   def initialize(phrase)
     @words = phrase.downcase.scan(RE[:words_including_contraction])
