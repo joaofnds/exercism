@@ -46,6 +46,6 @@ class Hamming
 
     true
   end
- 
-  alias_method :assert_comparable, :assert_same_length_sequences
+
+  alias assert_comparable assert_same_length_sequences
 end
