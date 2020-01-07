@@ -3,58 +3,49 @@
 class DNA
   NUCLEOTIDES = %w[A C T G].freeze
 
-  private_constant :NUCLEOTIDES
-
-  def initialize(strand)
-    @strand = strand
+  def self.dna_strand?(dna_strand)
+    dna_strand.chars.all? { |nucleotide| NUCLEOTIDES.include? nucleotide }
   end
-
-  def valid_strand?
-    strand =~ /^[#{NUCLEOTIDES}]*$/
-  end
-
-  private
-
-  attr_reader :strand
 end
 
 class Hamming
-  class DifferentLengthStrandsError < ArgumentError; end
-  class InvalidDNANucleotideError < ArgumentError; end
+  class DifferentLengthSequencesError < ArgumentError; end
 
-  def self.compute(strand_a, strand_b)
-    new(strand_a, strand_b).distance
+  def self.compute(sequence1, sequence2)
+    unless DNA.dna_strand?(sequence1)
+      raise ArgumentError, 'sequence1 is not a valid DNA strand'
+    end
+
+    unless DNA.dna_strand?(sequence2)
+      raise ArgumentError, 'sequence2 is not a valid DNA strand'
+    end
+
+    new(sequence1, sequence2).distance
   end
 
   def distance
-    assert_comparable_strands
+    assert_comparable
 
-    pairs = strand_a.chars.zip(strand_b.chars)
+    pairs = sequence1.chars.zip(sequence2.chars)
     pairs.count { |a, b| a != b }
   end
 
   private
 
-  attr_reader :strand_a, :strand_b
+  attr_reader :sequence1, :sequence2
 
-  def initialize(strand_a, strand_b)
-    @strand_a = strand_a
-    @strand_b = strand_b
+  def initialize(sequence1, sequence2)
+    @sequence1 = sequence1
+    @sequence2 = sequence2
   end
 
-  def assert_comparable_strands
-    unless strand_a.length == strand_b.length
-      raise DifferentLengthStrandsError, 'different length strands'
-    end
-
-    unless DNA.new(strand_a).valid_strand?
-      raise InvalidDNANucleotideError, 'strand A is not a valid DNA strand'
-    end
-
-    unless DNA.new(strand_b).valid_strand?
-      raise InvalidDNANucleotideError, 'strand B is not a valid DNA strand'
+  def assert_same_length_sequences
+    unless sequence1.length == sequence2.length
+      raise DifferentLengthSequencesError, 'different length sequences'
     end
 
     true
   end
+ 
+  alias_method :assert_comparable, :assert_same_length_sequences
 end

@@ -35,30 +35,3 @@ class HammingTest < Minitest::Test
     end
   end
 end
-
-if defined?(Minitest)
-  describe :Hamming do
-
-    expected = 'some custom message'
-
-    describe :DifferentLengthStrandsError do
-      describe 'must honor expected conventions' do
-        it 'must accept a custom message on demand' do
-          actual = Hamming::DifferentLengthStrandsError.new('some custom message').message
-
-          assert_equal actual, expected
-        end
-      end
-    end
-
-    describe :InvalidDNANucleotideError do
-      describe 'must honor expected conventions' do
-        it 'must accept a custom message on demand' do
-          actual = Hamming::InvalidDNANucleotideError.new('some custom message').message
-
-          assert_equal actual, expected
-        end
-      end
-    end
-  end
-end
