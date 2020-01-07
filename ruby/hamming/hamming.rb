@@ -26,11 +26,6 @@ class Hamming
     new(strand_a, strand_b).distance
   end
 
-  def initialize(strand_a, strand_b)
-    @strand_a = strand_a
-    @strand_b = strand_b
-  end
-
   def distance
     assert_comparable_strands
 
@@ -41,6 +36,11 @@ class Hamming
   private
 
   attr_reader :strand_a, :strand_b
+
+  def initialize(strand_a, strand_b)
+    @strand_a = strand_a
+    @strand_b = strand_b
+  end
 
   def assert_comparable_strands
     unless strand_a.length == strand_b.length
