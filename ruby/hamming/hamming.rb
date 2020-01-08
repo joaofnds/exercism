@@ -1,33 +1,22 @@
 # frozen_string_literal: true
 
-class DNA
-  NUCLEOTIDES = %w[A C T G].freeze
-
-  def self.dna_strand?(dna_strand)
-    dna_strand.chars.all? { |nucleotide| NUCLEOTIDES.include? nucleotide }
-  end
-end
+require_relative 'hammingerrors'
+require_relative 'strand'
 
 class Hamming
-  class DifferentLengthSequencesError < ArgumentError; end
+  include HammingErrors
 
-  def self.compute(sequence1, sequence2)
-    unless DNA.dna_strand?(sequence1)
-      raise ArgumentError, 'sequence1 is not a valid DNA strand'
-    end
+  def self.compute(strand_str1, strand_str2)
+    strand1 = Strand.new(strand_str1.chars)
+    strand2 = Strand.new(strand_str2.chars)
 
-    unless DNA.dna_strand?(sequence2)
-      raise ArgumentError, 'sequence2 is not a valid DNA strand'
-    end
-
-    new(sequence1, sequence2).distance
+    new(strand1, strand2).distance
   end
 
   def distance
-    assert_comparable
+    assert_same_length
 
-    pairs = sequence1.chars.zip(sequence2.chars)
-    pairs.count { |a, b| a != b }
+    sequence1.zip(sequence2).count { |a, b| a != b }
   end
 
   private
@@ -39,13 +28,9 @@ class Hamming
     @sequence2 = sequence2
   end
 
-  def assert_same_length_sequences
-    unless sequence1.length == sequence2.length
-      raise DifferentLengthSequencesError, 'different length sequences'
-    end
+  def assert_same_length
+    return true if sequence1.length == sequence2.length
 
-    true
+    raise DifferentLengthSequencesError
   end
-
-  alias assert_comparable assert_same_length_sequences
 end
