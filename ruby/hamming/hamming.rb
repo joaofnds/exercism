@@ -1,22 +1,17 @@
-# frozen_string_literal: true
-
-require_relative 'hammingerrors'
 require_relative 'strand'
 
 class Hamming
-  include HammingErrors
+  class SequenceLengthError < ArgumentError; end
 
-  def self.compute(strand_str1, strand_str2)
-    strand1 = Strand.new(strand_str1.chars)
-    strand2 = Strand.new(strand_str2.chars)
+  def self.compute(sequence1, sequence2)
+    strand1 = Strand.new(sequence1.chars)
+    strand2 = Strand.new(sequence2.chars)
 
     new(strand1, strand2).distance
   end
 
   def distance
-    assert_same_length
-
-    sequence1.zip(sequence2).count { |a, b| a != b }
+    sequence1.zip(sequence2).count { |m1, m2| m1 != m2 }
   end
 
   private
@@ -24,13 +19,11 @@ class Hamming
   attr_reader :sequence1, :sequence2
 
   def initialize(sequence1, sequence2)
+    unless sequence1.length == sequence2.length
+      raise SequenceLengthError, 'sequences must have the same length'
+    end
+
     @sequence1 = sequence1
     @sequence2 = sequence2
-  end
-
-  def assert_same_length
-    return true if sequence1.length == sequence2.length
-
-    raise DifferentLengthSequencesError
   end
 end
