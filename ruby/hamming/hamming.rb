@@ -1,16 +1,15 @@
+require_relative 'stranderrors'
+
 class Hamming
-  class StrandLengthsError < ArgumentError
-    def initialize(message = 'strands must have equal lengths')
-      super
-    end
-  end
+  include StrandErrors
 
   def self.compute(strand1, strand2)
     new(strand1, strand2).distance
   end
 
   def distance
-    strand1.chars.zip(strand2.chars).count { |n1, n2| n1 != n2 }
+    nucleotide_pairs = strand1.chars.zip(strand2.chars)
+    nucleotide_pairs.count { |n1, n2| n1 != n2 }
   end
 
   private
