@@ -1,15 +1,15 @@
-require_relative 'strand'
 require_relative 'stranderrors'
 
 class Hamming
   include StrandErrors
 
   def self.compute(strand1, strand2)
-    new(Strand.new(strand1), Strand.new(strand2)).distance
+    new(strand1, strand2).distance
   end
 
   def distance
-    strand1 - strand2
+    nucleotides = strand1.chars.zip(strand2.chars)
+    nucleotides.count { |nucleotide1, nucleotide2| nucleotide1 != nucleotide2 }
   end
 
   private
