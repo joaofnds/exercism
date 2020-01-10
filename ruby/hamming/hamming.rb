@@ -8,7 +8,6 @@ class Hamming
   end
 
   def distance
-    nucleotides = strand1.chars.zip(strand2.chars)
     nucleotides.count { |nucleotide1, nucleotide2| nucleotide1 != nucleotide2 }
   end
 
@@ -21,5 +20,9 @@ class Hamming
 
     @strand1 = strand1
     @strand2 = strand2
+  end
+
+  def nucleotides
+    strand1.chars.zip(strand2.chars)
   end
 end
