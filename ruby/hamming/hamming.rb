@@ -23,6 +23,6 @@ class Hamming
   end
 
   def nucleotides
-    strand1.chars.zip(strand2.chars)
+    @nucleotides = strand1.chars.zip(strand2.chars)
   end
 end
