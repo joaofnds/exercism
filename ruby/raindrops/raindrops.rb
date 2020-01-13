@@ -17,21 +17,22 @@ class Raindrops
 
   private
 
-  attr_reader :number
+  attr_reader :number, :rules
 
-  def initialize(number)
+  def initialize(number, rules=RULES)
     @number = number
+    @rules = rules
   end
 
   def factors
-    RULES.keys.filter { |factor| (number % factor).zero? }
+    rules.keys.filter { |factor| (number % factor).zero? }
   end
 
-  def splatters
-    @splatters ||= factors.map { RULES[_1] }
+  def splatter
+    @splatters ||= factors.map { rules[_1] }.join
   end
 
   def sound
-    splatters.empty? ? number : splatters.join
+    splatter.empty? ? number : splatter
   end
 end
