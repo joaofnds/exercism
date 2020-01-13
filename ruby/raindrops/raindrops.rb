@@ -19,7 +19,7 @@ class Raindrops
 
   attr_reader :number, :rules
 
-  def initialize(number, rules=RULES)
+  def initialize(number, rules = RULES)
     @number = number
     @rules = rules
   end
@@ -29,7 +29,7 @@ class Raindrops
   end
 
   def splatter
-    @splatters ||= factors.map { rules[_1] }.join
+    @splatter ||= factors.map { rules[_1] }.join
   end
 
   def sound
