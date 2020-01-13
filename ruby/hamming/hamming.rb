@@ -8,7 +8,7 @@ class Hamming
   end
 
   def distance
-    nucleotides.count { |nucleotide1, nucleotide2| nucleotide1 != nucleotide2 }
+    nucleotides.count { _1 != _2 }
   end
 
   private
