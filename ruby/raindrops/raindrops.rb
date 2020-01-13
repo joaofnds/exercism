@@ -1,28 +1,21 @@
 # frozen_string_literal: true
 
 class Raindrops
-  def self.convert(number)
-    new(number).speak
-  end
-
-  def speak
-    speak_words = words
-    if speak_words.empty?
-      number.to_s
-    else
-      speak_words.join
-    end
-  end
-
-  private
-
-  FACTORS = {
+  RULES = {
     3 => 'Pling',
     5 => 'Plang',
     7 => 'Plong'
   }.freeze
 
-  private_constant :FACTORS
+  def self.convert(number)
+    new(number).to_s
+  end
+
+  def to_s
+    sound.to_s
+  end
+
+  private
 
   attr_reader :number
 
@@ -31,10 +24,14 @@ class Raindrops
   end
 
   def factors
-    FACTORS.keys.filter { (number % _1).zero? }
+    RULES.keys.filter { |factor| (number % factor).zero? }
   end
 
-  def words
-    factors.map { FACTORS[_1] }
+  def splatters
+    @splatters ||= factors.map { RULES[_1] }
+  end
+
+  def sound
+    splatters.empty? ? number : splatters.join
   end
 end
