@@ -14,24 +14,20 @@ class CollatzConjecture
   end
 
   def steps
-    steps = 0
+    step until ended?
 
-    until ended?
-      step
-      steps += 1
-    end
-
-    steps
+    steps_taken
   end
 
   private
 
-  attr_accessor :current
+  attr_accessor :current, :steps_taken
 
   def initialize(start)
     raise NotACollatzNumber unless start.positive?
 
     @current = start
+    @steps_taken = 0
   end
 
   def next_step
@@ -44,6 +40,7 @@ class CollatzConjecture
 
   def step
     self.current = next_step
+    self.steps_taken += 1
   end
 
   def ended?
