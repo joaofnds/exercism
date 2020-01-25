@@ -3,8 +3,6 @@ class Array
   # alias accumulate map
 
   def accumulate
-    [].tap do |acc|
-      each { acc << yield(_1) }
-    end
+    each_with_object([]) { _2 << yield(_1) }
   end
 end
