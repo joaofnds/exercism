@@ -38,4 +38,12 @@ class ArrayTest < Minitest::Test
     original.accumulate { |n| n * n }
     assert_equal copy, original
   end
+
+  def test_accumulate_when_block_is_deferred
+    accumulate_enumerator = [1, 2, 3].accumulate
+    accumulated_result = accumulate_enumerator.map do |number|
+      number * number
+    end
+    assert_equal [1, 4, 9], accumulated_result
+  end
 end
