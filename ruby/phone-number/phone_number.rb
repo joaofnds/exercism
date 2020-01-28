@@ -1,22 +1,31 @@
 class PhoneNumber
   RE = REGULAR_EXPRESSION = {
-    digits:                   /\d+/,
-    country_code:             /1/,
-    numbering_plan_area_code: /[2-9]\d{2}/,
-    central_office_code:      /[2-9]\d{2}/,
-    line_number:              /\d{4}/
+    digits: /\d+/,
+    country: /1/,
+    area: /[2-9]\d{2}/,
+    city: /[2-9]\d{2}/,
+    number: /\d{4}/
   }.freeze
 
   def self.clean(number)
-    just_digits = number.scan(RE[:digits]).join
+    new(number).clean
+  end
 
-    country     = RE[:country_code]
-    area        = RE[:numbering_plan_area_code]
-    co_code     = RE[:central_office_code]
-    line_number = RE[:line_number]
+  def clean
+    captures = @digits.match(nanp_format)&.named_captures
 
-    nanp = /^#{country}?(#{area}#{co_code}#{line_number})$/
+    "#{captures['area']}#{captures['city']}#{captures['number']}" if captures
+  end
 
-    just_digits.match(nanp)&.captures&.first
+  private
+
+  attr_reader :digits
+
+  def initialize(number)
+    @digits = number.scan(RE[:digits]).join
+  end
+
+  def nanp_format
+    /^(?<country>#{RE[:country]})?(?<area>#{RE[:area]})(?<city>#{RE[:city]})(?<number>#{RE[:number]})$/
   end
 end
