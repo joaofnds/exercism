@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Brackets
+  class UnmatchedBracketError < StandardError; end
+
   OPEN_CLOSE = {
     '[': ']',
     '(': ')',
@@ -14,6 +16,8 @@ class Brackets
   def paired?
     scan
     stack.empty?
+  rescue UnmatchedBracketError
+    false
   end
 
   private
@@ -31,8 +35,6 @@ class Brackets
         open! char
       elsif closing? char
         close! char
-      else
-        next
       end
     end
   end
@@ -42,11 +44,7 @@ class Brackets
   end
 
   def close!(char)
-    if stack.last == matching_pair(char)
-      stack.pop
-    else
-      stack.push('E')
-    end
+    raise UnmatchedBracketError unless stack.pop == matching_pair(char)
   end
 
   def matching_pair(char)
