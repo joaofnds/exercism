@@ -4,8 +4,8 @@ class Matrix
   def saddle_points
     [].tap do |points|
       rows.each_with_index do |row, i|
-        row.each_with_index do |number, j|
-          points << [i, j] if point?(number, i, j)
+        row.each_with_index do |_, j|
+          points << [i, j] if point?(i, j)
         end
       end
     end
@@ -22,7 +22,8 @@ class Matrix
     raw_input.lines.map { _1.strip.split(' ').map(&:to_i) }
   end
 
-  def point?(number, row_index, column_index)
+  def point?(row_index, column_index)
+    number = rows[row_index][column_index]
     number == rows[row_index].max && number == columns[column_index].min
   end
 
