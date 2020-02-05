@@ -1,8 +1,35 @@
-=begin
-Write your code for the 'Saddle Points' exercise in this file. Make the tests in
-`saddle_points_test.rb` pass.
+class Matrix
+  attr_reader :columns, :rows
 
-To get started with TDD, see the `README.md` file in your
-`ruby/saddle-points` directory.
-=end
+  def saddle_points
+    [].tap do |points|
+      rows.each_with_index do |row, i|
+        row.each_with_index do |number, j|
+          points << [i, j] if point?(number, i, j)
+        end
+      end
+    end
+  end
 
+  private
+
+  def initialize(number_list_as_string)
+    @rows = parse_matrix(number_list_as_string)
+    @columns = rows.transpose
+  end
+
+  def parse_matrix(raw_input)
+    raw_input.lines.map { _1.strip.split(' ').map(&:to_i) }
+  end
+
+  def point?(number, row_index, column_index)
+    number == rows[row_index].max && number == columns[column_index].min
+  end
+
+  def to_s
+    rows.reduce('') do |out, row|
+      row.each { out += format('%<number>4d', number: _1) }
+      out += "\n"
+    end
+  end
+end
