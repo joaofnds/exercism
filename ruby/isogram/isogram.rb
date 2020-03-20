@@ -1,22 +1,22 @@
 class Isogram
   RE = REGULAR_EXPRESSION = {
-    letter: /[a-zA-Z]/
+    letter: /[[:alpha:]]/
   }.freeze
 
-  def self.isogram?(input)
-    new(input).isogram?
+  def self.isogram?(word)
+    new(word).isogram?
   end
 
   def isogram?
-    letter_frequency.all? { |(key, value)| !letter?(key) || value == 1 }
+    letter_frequency.none? { |(letter, freq)| letter?(letter) && freq != 1 }
   end
 
   private
 
   attr_reader :letter_frequency
 
-  def initialize(input)
-    @letter_frequency = input.downcase.chars.tally
+  def initialize(word)
+    @letter_frequency = word.downcase.chars.tally
   end
 
   def letter?(candidate)
