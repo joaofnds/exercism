@@ -1,25 +1,27 @@
 class Isogram
   RE = REGULAR_EXPRESSION = {
     letter: /[[:alpha:]]/
-  }.freeze
+  }
 
-  def self.isogram?(word)
-    new(word).isogram?
-  end
-
-  def isogram?
-    letter_frequency.none? { |(letter, freq)| letter?(letter) && freq != 1 }
+  def self.isogram?(phrase)
+    new(phrase).isogram?
   end
 
   private
 
-  attr_reader :letter_frequency
-
-  def initialize(word)
-    @letter_frequency = word.downcase.chars.tally
+  def initialize(phrase, token_extractor = method(:downcased_letters))
+    @tokens = token_extractor.call(phrase)
   end
 
-  def letter?(candidate)
-    candidate.match(RE[:letter])
+  attr_reader :tokens
+
+  def downcased_letters(phrase)
+    phrase.downcase.scan(RE[:letter])
+  end
+
+  public
+
+  def isogram?
+    tokens.uniq.length == tokens.length
   end
 end
