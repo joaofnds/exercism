@@ -1,27 +1,28 @@
 class Isogram
-  RE = REGULAR_EXPRESSION = {
-    letter: /[[:alpha:]]/
-  }
-
   def self.isogram?(phrase)
     new(phrase).isogram?
   end
 
   private
 
-  def initialize(phrase, token_extractor = method(:downcased_letters))
-    @tokens = token_extractor.call(phrase)
+  # tokenizer receives the phrase and expects an Enumerable back
+  def initialize(phrase, tokenizer: method(:normalize), &block)
+    @tokens = (block || tokenizer).call(phrase)
   end
 
   attr_reader :tokens
 
-  def downcased_letters(phrase)
-    phrase.downcase.scan(RE[:letter])
+  def normalize(phrase)
+    phrase.downcase.scan(/[[:alpha:]]/)
   end
 
   public
 
   def isogram?
+    # An isogram is a word or phrase without a repeating letter.
+    # If we take the unique letters of the phrase and it is shorter
+    # than the original group of letters, some letter was repeated.
+    # If the length stays the same, we've got an isogram
     tokens.uniq.length == tokens.length
   end
 end
