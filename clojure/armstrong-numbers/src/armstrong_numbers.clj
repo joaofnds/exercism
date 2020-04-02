@@ -1,13 +1,11 @@
 (ns armstrong-numbers)
 
-(defn expt
-  [a b]
-  (reduce * (repeat a b)))
-
+(def expt #(reduce * (repeat %1 %2)))
 (def parse-int #(Integer/parseInt %))
+(def split-digits #(map (comp parse-int str) (str %)))
 
 (defn armstrong? [num]
-  (let [num_as_s (str num)
-        len (count num_as_s)
-        sum_of_digits (reduce + (map (comp (partial expt len) parse-int str) num_as_s))]
-    (= num sum_of_digits)))
+  (let [digits (split-digits num)
+        len (count digits)
+        armstrong-sum (reduce + (map (partial expt len) digits))]
+    (= num armstrong-sum)))
