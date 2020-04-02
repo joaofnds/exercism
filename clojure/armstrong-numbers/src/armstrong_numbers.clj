@@ -6,6 +6,9 @@
 
 (defn armstrong? [num]
   (let [digits (split-digits num)
-        len (count digits)
-        armstrong-sum (reduce + (map (partial expt len) digits))]
-    (= num armstrong-sum)))
+        length (count digits)]
+    (->>
+     digits
+     (map #(expt length %)) ;; raise each digit to "length"
+     (reduce +)             ;; sum them to get the armstrong-sum
+     (= num))))             ;; check if armstrong-sum == number
