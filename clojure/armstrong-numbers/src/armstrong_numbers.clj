@@ -1,8 +1,8 @@
 (ns armstrong-numbers)
 
 (def expt #(reduce * (repeat %1 %2)))
-(def parse-int #(Integer/parseInt %))
-(def split-digits #(map (comp parse-int str) (str %)))
+(def char->int #(Character/digit % 10))
+(def split-digits #(map char->int (str %)))
 
 (defn armstrong? [num]
   (let [digits (split-digits num)
@@ -10,5 +10,5 @@
     (->>
      digits
      (map #(expt length %)) ;; raise each digit to "length"
-     (reduce +)             ;; sum them to get the armstrong-sum
+     (apply +)              ;; sum them to get the armstrong-sum
      (= num))))             ;; check if armstrong-sum == number
