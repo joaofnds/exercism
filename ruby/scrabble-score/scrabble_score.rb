@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Scrabble
   LETTER_SCORE = {
     a: 1, e: 1, i: 1, o: 1, u: 1, l: 1, n: 1, r: 1, s: 1, t: 1,
@@ -9,7 +7,7 @@ class Scrabble
     k: 5,
     j: 8, x: 8,
     q: 10, z: 10
-  }.transform_keys!(&:to_s)
+  }.transform_keys(&:to_s)
 
   def self.score(word)
     new(word).score
