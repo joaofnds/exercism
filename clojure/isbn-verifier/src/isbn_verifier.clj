@@ -23,5 +23,3 @@
          isbn-sum
          valid-isbn-sum?)
     false))
-
-(isbn? "3-598-21508-8")
