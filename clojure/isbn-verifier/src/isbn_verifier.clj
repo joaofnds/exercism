@@ -4,22 +4,22 @@
 (defn- isbn-schema? [isbn]
   (re-matches #"(?:\d-?){9}[\dX]" isbn))
 
-(defn- isbn-code-to-values
-  [code]
-  (map
-   #(if (= % \X) 10 (Character/digit % 10))
-   (str/replace code "-" "")))
+(defn isbn->num [isbn-digit]
+  (cond (Character/isDigit isbn-digit) (- (long isbn-digit) 48)
+        (= isbn-digit \X) 10))
 
-(defn- isbn-sum [isbn-values]
-  (apply + (map-indexed #(* %2 (- 10 %1)) isbn-values)))
+(defn- isbn->nums [isbn]
+  (keep isbn->num isbn))
 
-(defn- valid-isbn-sum? [sum]
-  (zero? (mod sum 11)))
+(defn- divisible-by? [divisor dividend]
+  (zero? (mod dividend divisor)))
+
+(defn- checksum? [nums]
+  (->> (map * nums (range 10 0 -1))
+       (reduce +)
+       (divisible-by? 11)))
 
 (defn isbn? [isbn]
   (if (isbn-schema? isbn)
-    (->> isbn
-         isbn-code-to-values
-         isbn-sum
-         valid-isbn-sum?)
+    (checksum? (isbn->nums isbn))
     false))
