@@ -3,8 +3,8 @@
 (defn- divisible-by? [divisor dividend]
   (zero? (mod dividend divisor)))
 
-(defn- isbn-schema? [isbn]
-  "Checks if the given string has a valid ISBN10 schema"
+(defn- isbn-format? [isbn]
+  "Checks if the given string has a valid ISBN10 format"
   (boolean (re-matches #"(?:\d-?){9}[\dX]" isbn)))
 
 (defn isbn->num [isbn-digit]
@@ -33,7 +33,7 @@
 
 (defn isbn? [isbn]
   "Checks if the given isbn is a valid ISBN 10"
-  (and (isbn-schema? isbn) (checksum? (isbn->nums isbn))))
+  (and (isbn-format? isbn) (checksum? (isbn->nums isbn))))
 
 (defn isbn10->isbn13 [isbn10]
   "Converts the given ISBN10 string to ISBN13"
