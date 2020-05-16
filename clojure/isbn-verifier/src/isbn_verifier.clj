@@ -3,6 +3,9 @@
 (defn- divisible-by? [divisor dividend]
   (zero? (mod dividend divisor)))
 
+(defn- weighted-sum [nums weights]
+  (reduce + (map * nums weights)))
+
 (defn- isbn-format? [isbn]
   "Checks if the given string has a valid ISBN10 format"
   (boolean (re-matches #"(?:\d-?){9}[\dX]" isbn)))
@@ -22,13 +25,12 @@
 
 (defn- checksum? [nums]
   "Validate the given ISBN10 values"
-  (->> (map * nums (range 10 0 -1))
-       (reduce +)
+  (->> (weighted-sum nums (range 10 0 -1))
        (divisible-by? 11)))
 
 (defn- checksum13 [nums]
   "Calculates the checksum digit of the given ISBN13 values"
-  (let [sum (reduce + (map * nums (cycle [1 3])))]
+  (let [sum (weighted-sum nums (cycle [1 3]))]
     (- 10 (mod sum 10))))
 
 (defn isbn? [isbn]
