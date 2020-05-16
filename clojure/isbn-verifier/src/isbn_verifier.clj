@@ -1,57 +1,41 @@
 (ns isbn-verifier)
 
+(defn- divisible-by? [divisor dividend]
+  (zero? (mod dividend divisor)))
+
 (defn- isbn-schema? [isbn]
-  (re-matches #"(?:\d-?){9}[\dX]" isbn))
+  "Checks if the given string has a valid ISBN10 schema"
+  (boolean (re-matches #"(?:\d-?){9}[\dX]" isbn)))
 
 (defn isbn->num [isbn-digit]
+  "Given an ISBN digit, return its value"
   (cond (Character/isDigit isbn-digit) (- (long isbn-digit) 48)
         (= isbn-digit \X) 10))
 
 (defn- isbn->nums [isbn]
+  "Given an ISBN string, return its values"
   (keep isbn->num isbn))
 
-(defn- divisible-by? [divisor dividend]
-  (zero? (mod dividend divisor)))
+(defn- nums->isbn [nums]
+  "Formats a seq of numbers into an ISBN string."
+  (apply str (map #(if (= % 10) \X (str %)) nums)))
 
 (defn- checksum? [nums]
+  "Validate the given ISBN10 values"
   (->> (map * nums (range 10 0 -1))
        (reduce +)
        (divisible-by? 11)))
 
-(defn- adapt-isbn10-to-isbn13
-  [isbn10]
-  (->> isbn10
-       drop-last
-       (concat "978")
-       isbn->nums))
-
-(defn- isbn13-sum
-  [isbn13-nums]
-  (reduce + (map * isbn13-nums (flatten (repeat [1 3])))))
-
-(defn- isbn13-checksum-digit
-  [sum]
-  (let [remainder (rem sum 10)]
-    (if (zero? remainder)
-      0
-      (- 10 remainder))))
-
-(defn- isbn13-with-checksum-digit
-  [isbn13-without-checksum-digit]
-  (->> isbn13-without-checksum-digit
-       isbn13-sum
-       isbn13-checksum-digit
-       (conj (into [] isbn13-without-checksum-digit))
-       (apply str)))
+(defn- checksum13 [nums]
+  "Calculates the checksum digit of the given ISBN13 values"
+  (let [sum (reduce + (map * nums (cycle [1 3])))]
+    (- 10 (mod sum 10))))
 
 (defn isbn? [isbn]
-  (if (isbn-schema? isbn)
-    (checksum? (isbn->nums isbn))
-    false))
+  "Checks if the given isbn is a valid ISBN 10"
+  (and (isbn-schema? isbn) (checksum? (isbn->nums isbn))))
 
-(defn isbn10->isbn13
-  [isbn10]
-  (when (isbn? isbn10)
-    (-> isbn10
-        adapt-isbn10-to-isbn13
-        isbn13-with-checksum-digit)))
+(defn isbn10->isbn13 [isbn10]
+  "Converts the given ISBN10 string to ISBN13"
+  (let [nums (into [9 7 8] (drop-last (isbn->nums isbn10)))]
+    (nums->isbn (conj nums (checksum13 nums)))))
