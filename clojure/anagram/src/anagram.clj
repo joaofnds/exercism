@@ -6,7 +6,7 @@
         lower-candidate (lower-case candidate)]
     (and
      (not= lower-word lower-candidate)
-     (= (frequencies lower-word) (sort lower-candidate)))))
+     (= (frequencies lower-word) (frequencies lower-candidate)))))
 
 (defn anagrams-for [word prospect-list]
   (filter (partial anagram? word) prospect-list))
