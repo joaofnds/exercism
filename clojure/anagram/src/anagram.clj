@@ -9,4 +9,4 @@
      (= (sort lower-word) (sort lower-candidate)))))
 
 (defn anagrams-for [word prospect-list]
-  (filter (partial anagram? (sort word)) prospect-list))
+  (filter (partial anagram? word) prospect-list))
