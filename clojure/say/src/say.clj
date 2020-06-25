@@ -3,34 +3,16 @@
 
 ;; (clojure.pprint/cl-format "~R" num)
 
-(def units {0 "zero"
-            1 "one"
-            2 "two"
-            3 "three"
-            4 "four"
-            5 "five"
-            6 "six"
-            7 "seven"
-            8 "eight"
-            9 "nine"
-            10 "ten"
-            11 "eleven"
-            12 "twelve"
-            13 "thirteen"
-            14 "fourteen"
-            15 "fifteen"
-            16 "sixteen"
-            17 "seventeen"
-            18 "eighteen"
-            19 "nineteen"
-            20 "twenty"
-            30 "thirty"
-            40 "forty"
-            50 "fifty"
-            60 "sixty"
-            70 "seventy"
-            80 "eighty"
-            90 "ninety"})
+(def units-through-20 ["zero" "one" "two" "three" "four"
+                       "five" "six" "seven" "eight" "nine"
+                       "ten" "eleven" "twelve" "thirteen" "fourteen"
+                       "fifteen" "sixteen" "seventeen" "eighteen" "nineteen"
+                       "twenty"])
+
+(def units-tens ["zero" "ten" "twenty" "thirty" "forty"
+                 "fifty" "sixty" "seventy" "eighty" "ninety"])
+
+(def group-names ["" "thousand" "million" "billion"])
 
 (defn- divisible-by? [num by]
   (pos? (quot num by)))
@@ -39,20 +21,70 @@
   (let [tens (quot num 10)
         ones (rem num 10)]
     (if (< num 20)
-      (units num)
-      (join "-" (cond-> []
-                  (pos? tens) (conj (units (* 10 tens)))
-                  (pos? ones) (conj (units ones)))))))
+      (units-through-20 num)
+      (cond-> []
+        (pos? tens) (conj (units-tens tens))
+        (pos? ones) (conj (units-through-20 ones))
+        :always (as-> tens-and-ones (join "-" tens-and-ones))))))
+
+(defn- number-greater-than-100 [num]
+  (let [hundreds (quot num 100)
+        remainder (rem num 100)
+        hundreds-number (number-less-than-100 hundreds)
+        remainder-number (number-less-than-100 remainder)]
+    (cond
+      (and (pos? hundreds) (pos? remainder)) (str hundreds-number " hundred " remainder-number)
+      (pos? hundreds) (str hundreds-number " hundred")
+      (pos? remainder) remainder-number)))
+
+(defn- group-number [num]
+  (cond
+    (>= num 100) (number-greater-than-100 num)
+    (pos? num) (number-less-than-100 num)
+    (zero? num) nil))
+
+(defn- last-three-digits [num]
+  (rem num 1000))
+
+(defn- up-to-last-three-digits [num]
+  (quot num 1000))
+
+(defn- reject [pred coll]
+  (filter (complement pred) coll))
+
+(defn- add-group-names [groups]
+  (->> groups
+       reverse
+       (interleave group-names)
+       reverse
+       (partition 2)
+       (reject #(nil? (first %)))
+       flatten))
+
+(defn- join-groups [groups]
+  (->> groups
+       (join " ")
+       .trim))
+
+(defn- grouped-numbers [num]
+  (loop [remainder (up-to-last-three-digits num)
+         group (last-three-digits num)
+         groups (list)]
+    (if (zero? remainder)
+      (conj groups group)
+      (recur (up-to-last-three-digits remainder)
+             (last-three-digits remainder)
+             (conj groups group)))))
+(defn- zero-if-empty [str]
+  (if (.isEmpty str)
+    "zero"
+    str))
 
 (defn number [num]
   (when-not (>= 999999999999 num 0)
     (throw (IllegalArgumentException. "out of range")))
-  (loop [n num result []]
-    (cond
-      (zero? num) "zero"
-      (zero? n) (join " " result)
-      (divisible-by? n 1000000000) (recur (mod n 1000000000) (conj result (str (number (quot n 1000000000)) " billion")))
-      (divisible-by? n 1000000)    (recur (mod n 1000000)    (conj result (str (number (quot n 1000000)) " million")))
-      (divisible-by? n 1000)       (recur (mod n 1000)       (conj result (str (number (quot n 1000)) " thousand")))
-      (divisible-by? n 100)        (recur (mod n 100)        (conj result (str (units (quot n 100)) " hundred")))
-      :else (join " " (conj result (number-less-than-100 n))))))
+  (->> (grouped-numbers num)
+       (map group-number)
+       add-group-names
+       join-groups
+       zero-if-empty))
