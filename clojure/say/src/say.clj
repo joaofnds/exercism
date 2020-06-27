@@ -1,5 +1,5 @@
 (ns say
-  (:require [clojure.string :refer [join]]))
+  (:require [clojure.string :refer [trim blank? join]]))
 
 ;; (clojure.pprint/cl-format "~R" num)
 
@@ -61,7 +61,7 @@
 (defn- join-groups [groups]
   (->> groups
        (join " ")
-       .trim))
+       trim))
 
 (defn- grouped-numbers [num]
   (loop [remainder (up-to-last-three-digits num)
@@ -73,7 +73,7 @@
              (last-three-digits remainder)
              (conj groups group)))))
 (defn- zero-if-empty [str]
-  (if (.isEmpty str)
+  (if (blank? str)
     "zero"
     str))
 
