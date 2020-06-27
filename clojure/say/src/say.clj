@@ -34,7 +34,7 @@
       (pos? hundreds) (str hundreds-number " hundred")
       (pos? remainder) remainder-number)))
 
-(defn- group-number [num]
+(defn- group->words [num]
   (cond
     (>= num 100) (number-greater-than-100 num)
     (pos? num) (number-less-than-100 num)
@@ -78,7 +78,7 @@
   (when-not (>= 999999999999 num 0)
     (throw (IllegalArgumentException. "out of range")))
   (->> (grouped-numbers num)
-       (map group-number)
+       (map group->words)
        add-group-names
        join-groups
        zero-if-empty))
