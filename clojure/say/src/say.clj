@@ -46,16 +46,13 @@
 (defn- up-to-last-three-digits [num]
   (quot num 1000))
 
-(defn- reject [pred coll]
-  (filter (complement pred) coll))
-
 (defn- add-group-names [groups]
   (->> groups
        reverse
        (interleave group-names)
        reverse
        (partition 2)
-       (reject #(nil? (first %)))
+       (filter first)
        flatten))
 
 (defn- join-groups [groups]
