@@ -48,7 +48,6 @@
 
 (defn- add-group-names [groups]
   (->> groups
-       reverse
        (interleave group-names)
        reverse
        (partition 2)
@@ -63,12 +62,13 @@
 (defn- grouped-numbers [num]
   (loop [remainder (up-to-last-three-digits num)
          group (last-three-digits num)
-         groups (list)]
+         groups []]
     (if (zero? remainder)
       (conj groups group)
       (recur (up-to-last-three-digits remainder)
              (last-three-digits remainder)
              (conj groups group)))))
+
 (defn- zero-if-empty [str]
   (if (blank? str)
     "zero"
