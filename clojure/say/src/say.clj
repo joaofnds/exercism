@@ -14,9 +14,6 @@
 
 (def group-names ["" "thousand" "million" "billion"])
 
-(defn- divisible-by? [num by]
-  (pos? (quot num by)))
-
 (defn- number-less-than-100 [num]
   (let [tens (quot num 10)
         ones (rem num 10)]
