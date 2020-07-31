@@ -15,7 +15,6 @@
 (defn- from-base-10 [number base]
   (loop [digits '()
          n number]
-    (println)
     (if (pos? n)
       (recur (conj digits (rem n base))
              (floor n base))
