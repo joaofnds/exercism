@@ -24,8 +24,7 @@ class Luhn
   end
 
   def sanitize(numerical_string)
-    string_without_spaces = numerical_string.gsub(' ', '')
-    string_without_spaces.chars.map(&:to_i)
+    numerical_string.scan(/\d/).map(&:to_i)
   end
 
   def luhn_double(number)
