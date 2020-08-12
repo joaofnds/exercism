@@ -13,7 +13,7 @@
 (defn- luhn-sum [numbers]
   (apply + (map-indexed
             #(if (odd? %1) (luhn-double %2) %2)
-            numbers)))
+            (reverse numbers))))
 
 (defn- keep-digits [digits]
   (keep parse-digit digits))
@@ -29,7 +29,6 @@
   (if (valid-input? digits)
     (-> digits
         keep-digits
-        reverse
         luhn-sum
         (mod 10)
         zero?)
