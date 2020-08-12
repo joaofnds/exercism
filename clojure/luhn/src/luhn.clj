@@ -20,10 +20,10 @@
 
 (defn- valid-input? [digits]
   (->> digits
-       (re-matches #"(?<![a-z])[\d\s]+")
        (remove #(= \space %))
-       count
-       (< 1)))
+       (apply str)
+       (re-matches #"\d{2,}")
+       boolean))
 
 (defn valid? [digits]
   (if (valid-input? digits)
