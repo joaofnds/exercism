@@ -1,9 +1,6 @@
 class Luhn
   def self.valid?(numerical_string)
-    digits = numerical_string.scan(/\d/).map(&:to_i)
-    has_only_digits_and_spaces = numerical_string.chars.all? { /\d|\s/ =~ _1 }
-
-    has_only_digits_and_spaces && new(digits).valid?
+    new(numerical_string).valid?
   end
 
   def valid?
@@ -12,14 +9,18 @@ class Luhn
 
   private
 
-  attr_reader :digits
+  attr_reader :numerical_string
 
-  def initialize(digits)
-    @digits = digits
+  def initialize(numerical_string)
+    @numerical_string = numerical_string
+  end
+
+  def digits
+    @digits ||= numerical_string.scan(/\d/).map(&:to_i)
   end
 
   def multiple_digits?
-    @digits.length > 1
+    numerical_string.gsub(' ', '').match?(/^\d{2,}$/)
   end
 
   def luhn_sum_divisble_by_10?
