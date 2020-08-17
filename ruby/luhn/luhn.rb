@@ -15,10 +15,6 @@ class Luhn
     @numerical_string = numerical_string
   end
 
-  def digits
-    @digits ||= numerical_string.scan(/\d/).map(&:to_i)
-  end
-
   def multiple_digits?
     numerical_string.gsub(' ', '').match?(/^\d{2,}$/)
   end
@@ -30,6 +26,10 @@ class Luhn
   def luhn_sum
     evens, odds = digits.reverse.partition.each_with_index { |_, i| i.even? }
     evens.sum + odds.map { luhn_double _1 }.sum
+  end
+
+  def digits
+    @digits ||= numerical_string.scan(/\d/).map(&:to_i)
   end
 
   def luhn_double(number)
