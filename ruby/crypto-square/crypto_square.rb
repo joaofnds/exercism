@@ -2,10 +2,7 @@ class Crypto
   def ciphertext
     return '' if @columns.zero?
 
-    chuncked_plaintext
-      .transpose
-      .map(&:join)
-      .join(' ')
+    chuncked_plaintext.transpose.map(&:join).join(' ')
   end
 
   private
