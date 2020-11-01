@@ -18,12 +18,8 @@ class Crypto
   end
 
   def chuncked_plaintext
-    plaintext.chars
-      .each_slice(@columns)
-      .map { pad_array(_1, @columns) }
-  end
-
-  def pad_array(array, size)
-    array.fill(' ', array.length...size)
+    chunks = plaintext.chars.each_slice(columns).to_a
+    chunks.last << ' ' while chunks.last.length < columns
+    chunks
   end
 end
