@@ -2,7 +2,7 @@ class Crypto
   def ciphertext
     return '' if @columns.zero?
 
-    chuncked_plaintext.transpose.map(&:join).join(' ')
+    chunked_plaintext.transpose.map(&:join).join(' ')
   end
 
   private
@@ -14,7 +14,7 @@ class Crypto
     @columns = Math.sqrt(@plaintext.length).ceil
   end
 
-  def chuncked_plaintext
+  def chunked_plaintext
     chunks = plaintext.chars.each_slice(columns).to_a
     chunks.last << ' ' while chunks.last.length < columns
     chunks
