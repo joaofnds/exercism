@@ -10,7 +10,7 @@ class Crypto
   attr_reader :plaintext, :columns
 
   def initialize(plaintext)
-    @plaintext = plaintext.downcase.gsub(/[^\w]/, '')
+    @plaintext = plaintext.downcase.gsub(/\W/, '')
     @columns = Math.sqrt(@plaintext.length).ceil
   end
 
