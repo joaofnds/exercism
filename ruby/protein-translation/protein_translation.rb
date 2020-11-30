@@ -30,8 +30,7 @@ class Translation
   def self.of_rna(rna)
     codons_from_rna(rna)
       .map { of_codon(_1) }
-      .slice_before('STOP')
-      .first
+      .take_while { _1 != 'STOP' }
   end
 
   def self.codons_from_rna(rna)
