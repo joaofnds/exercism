@@ -10,10 +10,7 @@
       c)))
 
 (defn encode [plain]
-  (->> plain
-       str/lower-case
-       (re-seq #"[a-z0-9]")
-       (apply str)
+  (->> (str/replace (str/lower-case plain) #"[^a-z0-9]" "")
        (map encode-char)
        (partition-all 5)
        (map str/join)
