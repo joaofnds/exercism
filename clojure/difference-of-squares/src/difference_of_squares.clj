@@ -10,6 +10,4 @@
   (square (reduce + (range (inc n)))))
 
 (defn difference [n]
-  (let [sum-square (sum-of-squares n)
-        square-sum (square-of-sum n)]
-    (- square-sum sum-square)))
+  (- (square-of-sum n) (sum-of-squares n)))
