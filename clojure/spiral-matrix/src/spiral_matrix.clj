@@ -1,15 +1,16 @@
 (ns spiral-matrix)
 
-;; https://exercism.io/my/solutions/dc3151d991f84fedbd4fc269773be0c3
-
-(defn rotate
-  "rotates counter-clockwise"
+(defn- rotate
+  "rotates 90 degrees counter-clockwise"
   [[x y]] [(- y) x])
 
-(defn move [[x y] [dx dy]]
+(defn- move [[x y] [dx dy]]
   [(+ x dx) (+ y dy)])
 
-(defn trail [side]
+(defn- make-matrix [size]
+  (into [] (map #(into [] %) (partition size (range (* size size))))))
+
+(defn- trail [side]
   (let [area (* side side)]
     (if (zero? area)
       []
@@ -21,9 +22,6 @@
             (= (dec area) (count trail)) (conj trail pos)
             rotate? (recur pos (rotate dir) trail)
             :else (recur (move pos dir) dir (conj trail pos))))))))
-
-(defn make-matrix [size]
-  (into [] (map #(into [] %) (partition size (range (* size size))))))
 
 (defn spiral [n]
   (reduce
