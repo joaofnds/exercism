@@ -4,13 +4,10 @@
   (atom 0))
 
 (defn close-account [acc]
-  (reset! acc nil)
-  acc)
+  (reset! acc nil))
 
 (defn get-balance [acc]
-  (when-not (nil? @acc)
-    @acc))
+  @acc)
 
 (defn update-balance [acc amount]
-  (swap! acc + amount)
-  acc)
+  (swap! acc + amount))
