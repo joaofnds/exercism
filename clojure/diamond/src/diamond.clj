@@ -3,15 +3,13 @@
 (def alphabet (map char (range (int \A) (inc (int \Z)))))
 
 (defn top-left [letters spaces]
-  (map
-   #(apply str %)
-   (map-indexed
-    (fn [i space]
-      (map-indexed
-       (fn [j letter]
-         (if (= j (- spaces i)) space letter))
-       (repeat (inc spaces) \space)))
-    letters)))
+  (map-indexed
+   (fn [i letter]
+     (map-indexed
+      (fn [j space]
+        (if (= j (- spaces i)) letter space))
+      (repeat (inc spaces) \space)))
+   letters))
 
 (defn mirror [coll]
   (concat coll (rest (reverse coll))))
