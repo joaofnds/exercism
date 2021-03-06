@@ -64,4 +64,16 @@ var testCases = []struct {
 		0,
 		true,
 	},
+	{ // handles non-ascii chars
+		"aüa",
+		"aÃa",
+		1,
+		false,
+	},
+	{ // handles non-ascii chars
+		"a",
+		"ã",
+		1,
+		false,
+	},
 }
