@@ -2,7 +2,7 @@ package dna
 
 import "errors"
 
-var errInvalidNucletodie = errors.New("invalid nucleotide")
+var errInvalidNucleotide = errors.New("invalid nucleotide")
 
 // Histogram is a mapping from nucleotide to its count in given DNA.
 type Histogram map[rune]int
@@ -27,7 +27,7 @@ func (d DNA) Counts() (Histogram, error) {
 		if _, ok := h[n]; ok {
 			h[n]++
 		} else {
-			return h, errInvalidNucletodie
+			return h, errInvalidNucleotide
 		}
 	}
 	return h, nil
