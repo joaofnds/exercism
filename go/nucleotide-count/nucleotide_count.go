@@ -23,9 +23,9 @@ type DNA string
 // Returns an error if d contains an invalid nucleotide.
 func (d DNA) Counts() (Histogram, error) {
 	var h Histogram = newHistogram()
-	for _, c := range d {
-		if _, ok := h[c]; ok {
-			h[c]++
+	for _, n := range d {
+		if _, ok := h[n]; ok {
+			h[n]++
 		} else {
 			return h, errInvalidNucletodie
 		}
