@@ -1,7 +1,10 @@
+// Package raindrops implements the solution to the raindrops exercise on exercism
 package raindrops
 
 import "strconv"
 
+// Convert turns a number into a string that contains raindrop
+// sounds corresponding to certain potential factors
 func Convert(n int) string {
 	var output string
 
