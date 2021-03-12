@@ -1,28 +1,22 @@
 // Package strand implements the solution to the strand exercise on exercism
 package strand
 
-// ToRNA return the RNA complement of the given dna
-func ToRNA(dna string) string {
-	var result string
+type nucleotide = rune
 
-	for _, n := range dna {
-		result = result + string(nucleotideComplement(n))
-	}
-
-	return result
+var DNAComplement = map[rune]rune{
+	'A': 'U',
+	'C': 'G',
+	'T': 'A',
+	'G': 'C',
 }
 
-func nucleotideComplement(n rune) rune {
-	switch n {
-	case 'A':
-		return 'U'
-	case 'C':
-		return 'G'
-	case 'T':
-		return 'A'
-	case 'G':
-		return 'C'
-	default:
-		return 0
+// ToRNA return the RNA complement of the given dna
+func ToRNA(dna string) string {
+	result := make([]nucleotide, len(dna))
+
+	for i, n := range dna {
+		result[i] = DNAComplement[n]
 	}
+
+	return string(result)
 }
