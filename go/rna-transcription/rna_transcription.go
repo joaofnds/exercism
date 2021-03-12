@@ -10,7 +10,7 @@ var DNAComplement = map[nucleotide]nucleotide{
 	'G': 'C',
 }
 
-// ToRNA return the RNA complement of the given dna
+// ToRNA returns the RNA complement of the given dna
 func ToRNA(dna string) string {
 	result := make([]nucleotide, len(dna))
 
