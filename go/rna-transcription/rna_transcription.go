@@ -3,7 +3,7 @@ package strand
 
 type nucleotide = rune
 
-var DNAComplement = map[rune]rune{
+var DNAComplement = map[nucleotide]nucleotide{
 	'A': 'U',
 	'C': 'G',
 	'T': 'A',
