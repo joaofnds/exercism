@@ -1,4 +1,4 @@
-def delet_first(arr, elem)
+def delete_first(arr, elem)
   arr = arr.dup
   arr.delete_at(arr.index(elem) || arr.length)
   arr
@@ -7,7 +7,7 @@ end
 class Dominoes
   class << self
     def chain?(stones)
-      stones.empty? || stones.any? { backtrack delet_first(stones, _1), [_1] }
+      stones.empty? || stones.any? { backtrack delete_first(stones, _1), [_1] }
     end
 
     def backtrack(stones, chain)
@@ -16,7 +16,7 @@ class Dominoes
       else
         stones.any? do |stone|
           m = match(chain.last, stone)
-          m && backtrack(delet_first(stones, stone), chain + [m])
+          m && backtrack(delete_first(stones, stone), chain + [m])
         end
       end
     end
