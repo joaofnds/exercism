@@ -15,10 +15,8 @@ var letterValue = map[rune]int{
 func Score(s string) int {
 	total := 0
 
-	for _, v := range strings.ToUpper(s) {
-		if p, ok := letterValue[v]; ok {
-			total += p
-		}
+	for _, l := range strings.ToUpper(s) {
+		total += letterValue[l]
 	}
 
 	return total
