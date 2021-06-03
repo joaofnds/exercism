@@ -17,10 +17,9 @@ class TwelveDays
   ]
 
   def self.song
-    lyrics = ''
     tail = ''
 
-    DAYS.each_with_index do |day, i|
+    DAYS.map.with_index do |day, i|
       tail = if i.zero?
                "#{GIFTS[0]}."
              elsif i == 1
@@ -29,9 +28,7 @@ class TwelveDays
                "#{GIFTS[i]}, #{tail}"
              end
 
-      lyrics += "On the #{day} day of Christmas my true love gave to me: #{tail}\n\n"
-    end
-
-    lyrics.chomp
+      "On the #{day} day of Christmas my true love gave to me: #{tail}\n\n"
+    end.join.chomp
   end
 end
