@@ -2,24 +2,21 @@ class School
   attr_reader :grade_students
 
   def students(grade)
-    @grade_students.fetch(grade, [])
+    @grade_students[grade]
   end
 
   def add(student, grade)
-    students = @grade_students.fetch(grade, [])
-    students << student
-    @grade_students[grade] = students.sort!
+    @grade_students[grade] <<= student
+    @grade_students[grade].sort!
   end
 
   def students_by_grade
-    grade_students
-      .each_pair.sort_by { _1 }
-      .map { { grade: _1, students: _2 } }
+    grade_students.sort_by(&:itself).map { { grade: _1, students: _2 } }
   end
 
   private
 
   def initialize
-    @grade_students = {}
+    @grade_students = Hash.new { [] }
   end
 end
