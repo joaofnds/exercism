@@ -1,15 +1,15 @@
-require "date"
+require 'date'
 
 class Meetup
-  WEEKDAYS = [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday]
+  WEEKDAYS = %i[sunday monday tuesday wednesday thursday friday saturday]
 
   WEEK_OFFSET = {
-    first:  1,
+    first: 1,
     second: 8,
-    third:  15,
+    third: 15,
     fourth: 22,
     teenth: 13,
-    last:   -7,
+    last: -7
   }
 
   def day(weekday, offset)
