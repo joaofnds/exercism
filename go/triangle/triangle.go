@@ -6,10 +6,10 @@ import "math"
 type Kind int
 
 const (
-	NotATriangle Kind = -1 // not a triangle
-	Equilateral Kind = 3  // equilateral
-	Isosceles Kind = 2  // isosceles
-	Scalene Kind = 0  // scalene
+	NotATriangle Kind = -1
+	Equilateral  Kind = 3
+	Isosceles    Kind = 2
+	Scalene      Kind = 0
 )
 
 // KindFromSides returns the type of triangle given its sides length
