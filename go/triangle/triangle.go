@@ -14,7 +14,7 @@ const (
 
 // KindFromSides returns the type of triangle given its sides length
 func KindFromSides(a, b, c float64) Kind {
-	if isValidTriangle(a, b, c) {
+	if isValid(a, b, c) {
 		switch {
 		case a != b && b != c && c != a:
 			return Sca
@@ -28,7 +28,7 @@ func KindFromSides(a, b, c float64) Kind {
 	return NaT
 }
 
-func isValidTriangle(a, b, c float64) bool {
+func isValid(a, b, c float64) bool {
 	for _, v := range []float64{a, b, c} {
 		if math.IsNaN(v) || math.IsInf(v, 0) || v == 0 {
 			return false
