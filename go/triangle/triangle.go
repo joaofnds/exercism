@@ -6,10 +6,10 @@ import "math"
 type Kind int
 
 const (
-	NaT Kind = -1 // not a triangle
-	Equ Kind = 3  // equilateral
-	Iso Kind = 2  // isosceles
-	Sca Kind = 0  // scalene
+	NotATriangle Kind = -1 // not a triangle
+	Equilateral Kind = 3  // equilateral
+	Isosceles Kind = 2  // isosceles
+	Scalene Kind = 0  // scalene
 )
 
 // KindFromSides returns the type of triangle given its sides length
@@ -17,15 +17,15 @@ func KindFromSides(a, b, c float64) Kind {
 	if isValid(a, b, c) {
 		switch {
 		case a != b && b != c && c != a:
-			return Sca
+			return Scalene
 		case a == b && b == c && c == a:
-			return Equ
+			return Equilateral
 		case a == b || b == c || c == a:
-			return Iso
+			return Isosceles
 		}
 	}
 
-	return NaT
+	return NotATriangle
 }
 
 func isValid(a, b, c float64) bool {

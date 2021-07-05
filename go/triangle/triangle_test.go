@@ -12,25 +12,25 @@ type testCase struct {
 
 // basic test cases
 var testData = []testCase{
-	{Equ, 2, 2, 2},    // same length
-	{Equ, 10, 10, 10}, // a little bigger
-	{Iso, 3, 4, 4},    // last two sides equal
-	{Iso, 4, 3, 4},    // first and last sides equal
-	{Iso, 4, 4, 3},    // first two sides equal
-	{Iso, 10, 10, 2},  // again
-	{Iso, 2, 4, 2},    // a "triangle" that is just a line is still OK
-	{Sca, 3, 4, 5},    // no sides equal
-	{Sca, 10, 11, 12}, // again
-	{Sca, 5, 4, 2},    // descending order
-	{Sca, .4, .6, .3}, // small sides
-	{Sca, 1, 4, 3},    // a "triangle" that is just a line is still OK
-	{Sca, 5, 4, 6},    // 2a == b+c looks like equilateral, but isn't always.
-	{Sca, 6, 4, 5},    // 2a == b+c looks like equilateral, but isn't always.
-	{NaT, 0, 0, 0},    // zero length
-	{NaT, 3, 4, -5},   // negative length
-	{NaT, 1, 1, 3},    // fails triangle inequality
-	{NaT, 2, 5, 2},    // another
-	{NaT, 7, 3, 2},    // another
+	{Equilateral, 2, 2, 2},    // same length
+	{Equilateral, 10, 10, 10}, // a little bigger
+	{Isosceles, 3, 4, 4},    // last two sides equal
+	{Isosceles, 4, 3, 4},    // first and last sides equal
+	{Isosceles, 4, 4, 3},    // first two sides equal
+	{Isosceles, 10, 10, 2},  // again
+	{Isosceles, 2, 4, 2},    // a "triangle" that is just a line is still OK
+	{Scalene, 3, 4, 5},    // no sides equal
+	{Scalene, 10, 11, 12}, // again
+	{Scalene, 5, 4, 2},    // descending order
+	{Scalene, .4, .6, .3}, // small sides
+	{Scalene, 1, 4, 3},    // a "triangle" that is just a line is still OK
+	{Scalene, 5, 4, 6},    // 2a == b+c looks like equilateral, but isn't always.
+	{Scalene, 6, 4, 5},    // 2a == b+c looks like equilateral, but isn't always.
+	{NotATriangle, 0, 0, 0},    // zero length
+	{NotATriangle, 3, 4, -5},   // negative length
+	{NotATriangle, 1, 1, 3},    // fails triangle inequality
+	{NotATriangle, 2, 5, 2},    // another
+	{NotATriangle, 7, 3, 2},    // another
 }
 
 // generate cases with NaN and Infs, append to basic cases
@@ -43,7 +43,7 @@ func init() {
 	for _, a := range []float64{3, nan, pinf, ninf} {
 		for _, b := range []float64{4, nan, pinf, ninf} {
 			for _, c := range []float64{5, nan, pinf, ninf} {
-				nf[i] = testCase{NaT, a, b, c}
+				nf[i] = testCase{NotATriangle, a, b, c}
 				i++
 			}
 		}
@@ -53,15 +53,15 @@ func init() {
 
 // Test that the kinds are not equal to each other.
 // If they are equal, then TestKind will return false positives.
-func TestKindsNotEqual(t *testing.T) {
+func TestKindsNotEquilateralal(t *testing.T) {
 	kindsAndNames := []struct {
 		kind Kind
 		name string
 	}{
-		{Equ, "Equ"},
-		{Iso, "Iso"},
-		{Sca, "Sca"},
-		{NaT, "NaT"},
+		{Equilateral, "Equilateral"},
+		{Isosceles, "Isosceles"},
+		{Scalene, "Scalene"},
+		{NotATriangle, "NotATriangle"},
 	}
 
 	for i, pair1 := range kindsAndNames {
