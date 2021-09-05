@@ -17,7 +17,7 @@
   (> 20 n))
 
 (defun make-magnificent-maybe (f numbers)
-  (map 'list f numbers))
+  (mapcar f numbers))
 
 (defun only-the-best (f numbers)
   (remove-if f (remove 1 numbers)))
