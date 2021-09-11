@@ -8,13 +8,8 @@
     (set-cdr! pair (fn (cdr pair)))
     pairlis))
 
-(define (reduce f init l)
-  (if (null? l)
-      init
-      (reduce f (f init (car l)) (cdr l))))
-
 (define (nucleotide-count dna)
-  (reduce
+  (fold-left
    (lambda (l c) (update l c 1+))
    (make-count-list)
    (string->list dna)))
