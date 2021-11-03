@@ -1,40 +1,36 @@
-class TeamStatus
-  attr_reader :team, :wins, :losses, :draws, :matches
+class Team
+  POINTS_PER_WIN = 3
+  POINTS_PER_DRAW = 1
+
+  attr_reader :name, :wins, :losses, :draws
 
   def won
     @wins += 1
-    @matches += 1
   end
 
   def lost
     @losses += 1
-    @matches += 1
   end
 
   def tied
     @draws += 1
-    @matches += 1
+  end
+
+  def matches
+    wins + losses + draws
   end
 
   def points
-    wins * 3 + draws
-  end
-
-  def <=>(other)
-    point_diff = -(points <=> other.points)
-    name_diff = team <=> other.team
-
-    !point_diff.zero? ? point_diff : name_diff
+    wins * POINTS_PER_WIN + draws * POINTS_PER_DRAW
   end
 
   private
 
-  def initialize(team)
-    @team = team
+  def initialize(name)
+    @name = name
     @wins = 0
     @losses = 0
     @draws = 0
-    @matches = 0
   end
 end
 
@@ -49,6 +45,9 @@ class Tournament
 
   private
 
+  HEADER_FORMAT = '%-30s | %2s | %2s | %2s | %2s | %2s'
+
+  private_constant :HEADER_FORMAT
   attr_reader :teams
 
   def initialize(results)
@@ -78,7 +77,7 @@ class Tournament
   end
 
   def ingest_team(name)
-    teams[name] ||= TeamStatus.new(name)
+    teams[name] ||= Team.new(name)
   end
 
   def header
@@ -86,9 +85,9 @@ class Tournament
   end
 
   def tournament_stats
-    teams.each_value.sort.map do |stats|
+    teams.each_value.sort_by { |stats| [-stats.points, stats.name] }.map do |stats|
       format_line(
-        stats.team,
+        stats.name,
         stats.matches,
         stats.wins,
         stats.draws,
@@ -99,20 +98,6 @@ class Tournament
   end
 
   def format_line(team, mp, w, d, l, p)
-    format('%-30s | %2s | %2s | %2s | %2s | %2s', team, mp, w, d, l, p)
+    format(HEADER_FORMAT, team, mp, w, d, l, p)
   end
-end
-
-if $PROGRAM_NAME == __FILE__
-  input = <<~INPUT
-    Blithering Badgers;Allegoric Alaskans;win
-  INPUT
-
-  expected = <<~TALLY
-    Team                           | MP |  W |  D |  L |  P
-    Blithering Badgers             |  1 |  1 |  0 |  0 |  3
-    Allegoric Alaskans             |  1 |  0 |  0 |  1 |  0
-  TALLY
-
-  puts Tournament.tally(input)
 end
