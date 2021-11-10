@@ -5,11 +5,13 @@
 
 (define (collatz n)
   (define (steps n count)
-    (cond
-     ((= 1 n) count)
-     ((divisible? n 2)
-      (steps (/ n 2) (+ 1 count)))
-     (else
-      (steps (+ 1 (* 3 n)) (+ 1 count)))))
+    (if (= 1 n)
+        count
+        (steps (collatz-of n) (+ 1 count))))
 
   (steps n 0))
+
+(define (collatz-of n)
+  (if (divisible? n 2)
+      (/ n 2)
+      (+ 1 (* 3 n))))
