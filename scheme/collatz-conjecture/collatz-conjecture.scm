@@ -1,8 +1,5 @@
 (import (rnrs))
 
-(define (divisible? x y)
-  (zero? (remainder x y)))
-
 (define (collatz n)
   (define (steps n count)
     (if (= 1 n)
@@ -15,3 +12,6 @@
   (if (divisible? n 2)
       (/ n 2)
       (+ 1 (* 3 n))))
+
+(define (divisible? x y)
+  (zero? (remainder x y)))
