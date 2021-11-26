@@ -32,14 +32,14 @@
      ((zero? result) 0)
      ((positive? result) 1))))
 
-(define (binary-search array target)
-  (define (search array target left right)
+(define (binary-search vector target)
+  (define (search vector target left right)
     (if (<= right left)
         'not-found
         (let ((mid (floor (+ left (/ (- right left) 2)))))
-          (case (comp target (list-ref array mid))
-            ((-1) (search array target left mid))
+          (case (comp target (vector-ref vector mid))
+            ((-1) (search vector target left mid))
             ((0)  mid)
-            ((1)  (search array target (+ 1 mid) right))))))
+            ((1)  (search vector target (+ 1 mid) right))))))
 
-  (search array target 0 (length array)))
+  (search vector target 0 (vector-length vector)))
