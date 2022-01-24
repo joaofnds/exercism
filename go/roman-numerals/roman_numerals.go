@@ -1,15 +1,16 @@
 package romannumerals
 
 import (
-	"errors"
+	"fmt"
+	"strings"
 )
 
 type Roman struct {
-	numeral int
-	symbol  string
+	value  int
+	symbol string
 }
 
-var intRoman = []Roman{
+var mappings = []Roman{
 	{1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
 	{100, "C"},  {90, "XC"},  {50, "L"},  {40, "XL"},
 	{10, "X"},   {9, "IX"},   {5, "V"},   {4, "IV"},
@@ -17,34 +18,18 @@ var intRoman = []Roman{
 }
 
 func ToRomanNumeral(in int) (string, error) {
-	if in > 3000 {
-		return "", errors.New("I could keep going but they don't want me too")
+	if in <= 0 || in > 3000 {
+		return "", fmt.Errorf("out of range, not defined for %d", in)
 	}
 
-	var out string
+	var out strings.Builder
 
-	for {
-		r, err := closestRoman(in)
-		if err != nil {
-			break
-		}
-
-		out += r.symbol
-		in -= r.numeral
-	}
-
-	if in != 0 || out == "" {
-		return "", errors.New("could not convert")
-	}
-
-	return out, nil
-}
-
-func closestRoman(n int) (Roman, error) {
-	for _, r := range intRoman {
-		if n >= r.numeral {
-			return r, nil
+	for _, m := range mappings {
+		for in >= m.value {
+			out.WriteString(m.symbol)
+			in -= m.value
 		}
 	}
-	return Roman{}, errors.New("no value found")
+
+	return out.String(), nil
 }
