@@ -2,16 +2,11 @@ package tournament
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"io"
 	"sort"
 	"strconv"
 	"strings"
-)
-
-var (
-	ErrBadInput = errors.New("bad input")
 )
 
 type Score struct {
