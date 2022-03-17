@@ -30,7 +30,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 func parseScores(r io.Reader) (map[string]*Score, error) {
 	tournament := map[string]*Score{}
 
-	err := eachEntry(r, func(t1, t2, result string) error {
+	err := eachEntry(r, func(t1, t2, result string) {
 		if _, ok := tournament[t1]; !ok {
 			tournament[t1] = &Score{team: t1}
 		}
@@ -60,8 +60,6 @@ func parseScores(r io.Reader) (map[string]*Score, error) {
 			tournament[t2].won++
 			tournament[t2].points += 3
 		}
-
-		return nil
 	})
 
 	return tournament, err
@@ -117,7 +115,7 @@ func writeLine(wr io.Writer, team, mp, w, d, l, p string) error {
 	return err
 }
 
-func eachEntry(r io.Reader, f func(string, string, string) error) error {
+func eachEntry(r io.Reader, f func(string, string, string)) error {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -134,10 +132,7 @@ func eachEntry(r io.Reader, f func(string, string, string) error) error {
 			return fmt.Errorf("invalid result %q", entry[2])
 		}
 
-		err := f(entry[0], entry[1], entry[2])
-		if err != nil {
-			return err
-		}
+		f(entry[0], entry[1], entry[2])
 	}
 
 	return nil
