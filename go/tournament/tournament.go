@@ -19,31 +19,18 @@ type Score struct {
 }
 
 func Tally(reader io.Reader, writer io.Writer) error {
-	scoreByName, err := parse(reader)
+	scoresByName, err := parseScores(reader)
 	if err != nil {
 		return err
 	}
 
-	sortedScores := sortScores(scoreByName)
+	sortedScores := sortScores(scoresByName)
 	return writeResults(writer, sortedScores)
 }
-
-func parse(r io.Reader) (map[string]*Score, error) {
-	scanner := bufio.NewScanner(r)
+func parseScores(r io.Reader) (map[string]*Score, error) {
 	tournament := map[string]*Score{}
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" || line[0] == '#' {
-			continue
-		}
-
-		entry := strings.Split(line, ";")
-		if len(entry) != 3 {
-			return nil, fmt.Errorf("line doesn't have 3 fields %q", line)
-		}
-		t1, t2, result := entry[0], entry[1], entry[2]
-
+	err := eachEntry(r, func(t1, t2, result string) error {
 		if _, ok := tournament[t1]; !ok {
 			tournament[t1] = &Score{team: t1}
 		}
@@ -72,12 +59,12 @@ func parse(r io.Reader) (map[string]*Score, error) {
 
 			tournament[t2].won++
 			tournament[t2].points += 3
-		default:
-			return nil, fmt.Errorf("invalid result %q", result)
 		}
-	}
 
-	return tournament, nil
+		return nil
+	})
+
+	return tournament, err
 }
 
 func sortScores(scoresByName map[string]*Score) []*Score {
@@ -128,4 +115,30 @@ func writeResults(w io.Writer, results []*Score) error {
 func writeLine(wr io.Writer, team, mp, w, d, l, p string) error {
 	_, err := fmt.Fprintf(wr, "%-30s | %2s | %2s | %2s | %2s | %2s\n", team, mp, w, d, l, p)
 	return err
+}
+
+func eachEntry(r io.Reader, f func(string, string, string) error) error {
+	scanner := bufio.NewScanner(r)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" || line[0] == '#' {
+			continue
+		}
+
+		entry := strings.Split(line, ";")
+		if len(entry) != 3 {
+			return fmt.Errorf("line doesn't have 3 fields %q", line)
+		}
+
+		if entry[2] != "win" && entry[2] != "loss" && entry[2] != "draw" {
+			return fmt.Errorf("invalid result %q", entry[2])
+		}
+
+		err := f(entry[0], entry[1], entry[2])
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
