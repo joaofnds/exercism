@@ -27,6 +27,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 	sortedScores := sortScores(scoresByName)
 	return writeResults(writer, sortedScores)
 }
+
 func parseScores(r io.Reader) (map[string]*Score, error) {
 	tournament := map[string]*Score{}
 
