@@ -7,31 +7,26 @@
 
 (defun smallest (min max)
   (when (> max min)
-    (loop :with pals := (palindromes min max)
-          :for i :in pals :by #'cddr
-          :minimizing i :into min
-          :finally (return (results-for pals min)))))
+    (loop :for n :from (expt min 2) :to (expt max 2)
+          :when (palindromep n min max)
+            :return (values n (factors n min max)))))
 
 (defun largest (min max)
   (when (> max min)
-    (loop :with pals := (palindromes min max)
-          :for i :in pals :by #'cddr
-          :maximizing i :into max
-          :finally (return (results-for pals max)))))
+    (loop :for n :from (expt max 2) :downto (expt min 2)
+          :when (palindromep n min max)
+            :return (values n (factors n min max)))))
 
-(defun palindromes (min max)
-  (loop :with pals
-        :for i :from min :to max
-        :do (loop :for j :from i :to max
-                  :when (palindromep (* i j))
-                    :do (pushnew (list i j) (getf pals (* i j))))
-        :finally (return pals)))
+(defun palindromep (number min max)
+  (let ((num (write-to-string number)))
+    (when (string= num (reverse num))
+      (loop :for factor :from min :to max
+            :when (multiple-value-bind (q m) (floor number factor)
+                    (and (zerop m) (<= min q max)))
+              :return t))))
 
-(defun palindromep (n)
-  (let ((str (write-to-string n)))
-    (string= str (reverse str))))
-
-(defun results-for (palindromes key)
-  (let ((pals (getf palindromes key)))
-    (when pals
-      (values key (reverse pals)))))
+(defun factors (n min max)
+  (loop :for factor :from min :to (isqrt n) :with q :and m
+        :do (multiple-value-setq (q m) (floor n factor))
+        :when (and (zerop m) (<= min q max))
+          :collect (list factor q)))
