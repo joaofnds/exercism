@@ -14,4 +14,4 @@ jobs:
         with:
           go-version: "^1.19"
       - name: tests
-        run: find . -name go.mod -execdir go test ./... \;
+        run: find go -name go.mod -execdir go test ./... \;
