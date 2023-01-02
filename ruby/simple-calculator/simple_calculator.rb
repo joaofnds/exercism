@@ -5,7 +5,7 @@ class SimpleCalculator
 
   def self.calculate(first_operand, second_operand, operation)
     raise UnsupportedOperation unless ALLOWED_OPERATIONS.include?(operation)
-    raise ArgumentError if [first_operand, second_operand].any? { _1.is_a?(String) }
+    raise ArgumentError if first_operand.is_a?(String) || second_operand.is_a?(String)
 
     begin
       result = first_operand.send(operation, second_operand)
