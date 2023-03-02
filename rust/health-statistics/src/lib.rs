@@ -6,7 +6,7 @@ pub struct User {
 
 impl User {
     pub fn new(name: String, age: u32, weight: f32) -> Self {
-        User { name, age, weight }
+        Self { name, age, weight }
     }
 
     pub fn name(&self) -> &str {
