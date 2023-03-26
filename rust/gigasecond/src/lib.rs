@@ -1,7 +1,6 @@
-use time::ext::NumericalDuration;
-use time::PrimitiveDateTime as DateTime;
+use time::{Duration, PrimitiveDateTime as DateTime};
 
 // Returns a DateTime one billion seconds after start.
 pub fn after(start: DateTime) -> DateTime {
-    start + 1e9.seconds()
+    start + Duration::seconds(1e9 as i64)
 }
