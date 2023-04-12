@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - "php/**/*.php"
-  workflow_dispatch:
 
 jobs:
   test:
