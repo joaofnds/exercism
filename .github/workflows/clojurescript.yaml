@@ -1,0 +1,21 @@
+name: Test ClojureScript
+
+on:
+  push:
+    paths:
+      - "clojurescript/**/*.cljs"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+      - uses: DeLaGuardo/setup-clojure@10.3
+        with:
+          cli: 1.11.1.1273
+      - name: tests
+        run: find clojurescript -name deps.edn -execdir clojure -A:test \;
