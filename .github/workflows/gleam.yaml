@@ -1,0 +1,18 @@
+name: Test Gleam
+
+on:
+  push:
+    paths:
+      - "gleam/**/*.gleam"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: 26
+          gleam-version: 1.0.0
+      - name: tests
+        run: find gleam -name gleam.toml -maxdepth 2 -execdir gleam test \;
