@@ -15,5 +15,10 @@ jobs:
           otp-version: 26.2.3
           rebar3-version: 3.22.1
           gleam-version: 1.0.0
+      - uses: actions/cache@v4
+        with:
+          path: gleam/*/build
+          key: gleam-build-${{ hashFiles('gleam/*/gleam.toml') }}
+          restore-keys: gleam-build-
       - name: tests
         run: find gleam -name gleam.toml -maxdepth 2 -execdir gleam test \;
