@@ -3,16 +3,14 @@ pub type Error {
 }
 
 pub fn steps(number: Int) -> Result(Int, Error) {
-  case number > 0 {
-    True -> Ok(collatz(number, 0))
-    False -> Error(NonPositiveNumber)
-  }
+  steps_iter(number, 0)
 }
 
-fn collatz(number: Int, step: Int) -> Int {
-  case number, number % 2 == 0 {
-    1, _ -> step
-    _, True -> collatz(number / 2, step + 1)
-    _, False -> collatz(3 * number + 1, step + 1)
+fn steps_iter(number: Int, step: Int) -> Result(Int, Error) {
+  case number % 2 == 0 {
+    _ if number == 1 -> Ok(step)
+    _ if number <= 0 -> Error(NonPositiveNumber)
+    True -> steps_iter(number / 2, step + 1)
+    False -> steps_iter(3 * number + 1, step + 1)
   }
 }
