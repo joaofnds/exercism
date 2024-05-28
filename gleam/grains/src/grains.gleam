@@ -1,13 +1,14 @@
-import gleam/bool
 import gleam/int
 
 pub type Error {
   InvalidSquare
 }
 
-pub fn square(x: Int) -> Result(Int, Error) {
-  use <- bool.guard(x < 1 || x > 64, Error(InvalidSquare))
-  Ok(int.bitwise_shift_left(1, x - 1))
+pub fn square(square: Int) -> Result(Int, Error) {
+  case 1 <= square && square <= 64 {
+    True -> Ok(int.bitwise_shift_left(1, square - 1))
+    False -> Error(InvalidSquare)
+  }
 }
 
 pub fn total() -> Int {
