@@ -6,8 +6,7 @@ pub type Clock {
 }
 
 pub fn create(hour hour: Int, minute minute: Int) -> Clock {
-  let total_minutes = hour * 60 + minute
-  Clock(minutes: { { total_minutes % 1440 } + 1440 } % 1440)
+  Clock(minutes: { { { hour * 60 + minute } % 1440 } + 1440 } % 1440)
 }
 
 pub fn add(clock: Clock, minutes minutes: Int) -> Clock {
