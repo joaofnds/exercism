@@ -10,7 +10,7 @@ pub fn to_tree(data: List(Int)) -> Tree {
 }
 
 pub fn sorted_data(data: List(Int)) -> List(Int) {
-  sorting_tree(to_tree(data))
+  to_list(to_tree(data))
 }
 
 fn insert(tree: Tree, num: Int) {
@@ -24,10 +24,10 @@ fn insert(tree: Tree, num: Int) {
   }
 }
 
-fn sorting_tree(input: Tree) {
+fn to_list(input: Tree) {
   case input {
     Nil -> []
     Node(data, left, right) ->
-      list.concat([sorting_tree(left), [data], sorting_tree(right)])
+      list.concat([to_list(left), [data], to_list(right)])
   }
 }
