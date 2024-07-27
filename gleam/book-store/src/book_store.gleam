@@ -13,7 +13,8 @@ pub fn lowest_price(books: List(Int)) -> Float {
 
 fn price(books: List(Int), sum: Float) -> Float {
   let books =
-    list.filter(books, fn(b) { b > 0 })
+    books
+    |> list.filter(fn(n) { n > 0 })
     |> list.sort(int.compare)
     |> list.map(int.subtract(_, 1))
 
@@ -24,8 +25,8 @@ fn price(books: List(Int), sum: Float) -> Float {
     [_, _, _, _] -> price(books, sum +. 4.0 *. 640.0)
     [a, ..rest] ->
       float.min(
+        price(books, sum +. 5.0 *. 600.0),
         price([a + 1, ..rest], sum +. 4.0 *. 640.0),
-        price([a, ..rest], sum +. 5.0 *. 600.0),
       )
     _ -> sum
   }
