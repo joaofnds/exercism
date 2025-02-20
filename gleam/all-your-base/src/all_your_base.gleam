@@ -15,7 +15,7 @@ pub fn rebase(
   |> result.try(digits(_, output_base))
 }
 
-pub fn undigits(numbers: List(Int), base: Int) -> Result(Int, Error) {
+fn undigits(numbers: List(Int), base: Int) -> Result(Int, Error) {
   case base < 2 {
     True -> Error(InvalidBase(base))
     False -> do_undigits(numbers, base, 0)
@@ -30,7 +30,7 @@ fn do_undigits(numbers: List(Int), base: Int, acc: Int) -> Result(Int, Error) {
   }
 }
 
-pub fn digits(number: Int, base: Int) -> Result(List(Int), Error) {
+fn digits(number: Int, base: Int) -> Result(List(Int), Error) {
   case base < 2 {
     True -> Error(InvalidBase(base))
     False -> Ok(do_digits(number, base, []))
