@@ -18,7 +18,7 @@ pub fn answer(question: String) -> Result(Int, Error) {
 
   let assert Ok(re) =
     regex.from_string(
-      "^What is (-?\\d+)( (plus|minus|multiplied by|divided by) (-?\\d+))*\\?$",
+      "What is -?\\d+( (plus|minus|multiplied by|divided by) -?\\d+)*\\?",
     )
 
   use <- bool.guard(!regex.check(re, question), Error(SyntaxError))
